@@ -4,6 +4,9 @@
         <meta charset="UTF-8">
         <title>AwesomeImage</title>
 
+        <link href="https://fonts.googleapis.com/css?family=Raleway:400,600" rel="stylesheet">
+        <link rel="stylesheet" href="{{ global.request.baseUrl }}/css/app.css">
+
         <script>
             UPLOADCARE_LIVE = false;
             UPLOADCARE_IMAGES_ONLY = true;
@@ -16,5 +19,7 @@
         <div class="container">
             {% block main %}{% endblock %}
         </div>
+
+        {% block scripts %}{% endblock %}
     </body>
 </html>
