@@ -29,9 +29,12 @@ $app->get('/', function () use ($app) {
     
     $images = $app['db']->prepare("SELECT * FROM images");
     $images->execute();
+    
     $images = $images->fetchAll(\PDO::FETCH_CLASS, \AI\Models\Image::class);
 
-    return $app['twig']->render('home.twig');
+    return $app['twig']->render('home.twig', [
+        'images' => $images,
+    ]);
 })->bind('home');
 
 $app->post('/upload', function (Request $request) use ($app) {
