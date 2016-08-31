@@ -29,7 +29,7 @@ $app->get('/', function () use ($app) {
     
     $images = $app['db']->prepare("SELECT * FROM images");
     $images->execute();
-    
+
     $images = $images->fetchAll(\PDO::FETCH_CLASS, \AI\Models\Image::class);
 
     return $app['twig']->render('home.twig', [
@@ -56,5 +56,23 @@ $app->post('/upload', function (Request $request) use ($app) {
 
     return $app->redirect($app['url_generator']->generate('home'));
 })->bind('image.upload');
+
+$app->get('/image/{hash}', function (Request $request) use ($app) {
+    $image = $app['db']->prepare("
+        SELECT url FROM images WHERE hash = :hash
+    ");
+
+    $image->execute([
+        'hash' => $request->get('hash'),
+    ]);
+
+    $image->setFetchMode(\PDO::FETCH_CLASS, \AI\Models\Image::class);
+
+    $image = $image->fetch();
+
+    return $app['twig']->render('show.twig', [
+        'image' => $image,
+    ]);
+})->bind('image.show');
 
 $app->run();
